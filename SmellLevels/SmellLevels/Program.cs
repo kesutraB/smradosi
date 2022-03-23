@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace SmellLevels
 {
@@ -40,6 +39,27 @@ namespace SmellLevels
             }
         }
 
+        private static bool FSave(string text)
+        {
+            if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (File.Exists(SavePath))
+                {
+                    File.Delete(SavePath);
+                }
+
+                foreach (var person in people)
+                {
+                    File.AppendAllText(SavePath, $"{person.Key} {person.Value}\n");
+                }
+
+                Console.WriteLine("Uloženo");
+                return true;
+            }
+
+            return false;
+        }
+
         private static void FExit(string text)
         {
             if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
@@ -48,32 +68,15 @@ namespace SmellLevels
             }
         }
 
-        private static bool FSave(string text)
+        private static void AddPeople(string name, Smells level)
         {
-            if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
-            {
-                foreach(var person in people)
-                {
-                    File.AppendAllText(SavePath, $"{person.Key} {person.Value}\n");
-                }
-                Console.WriteLine("Uloženo");
-                return true;
-            }
-
-            return false;
+            people.Add(name, level);
         }
 
         private static string GetName()
         {
-            string name;
             Console.Write("Zadej jméno smraďocha: ");
-            name = Console.ReadLine();
-            return name;
-        }
-
-        private static void AddPeople(string name, Smells level)
-        {
-            people.Add(name, level);
+            return Console.ReadLine();
         }
 
         private static double GetAvg(string name, int sum)
@@ -93,7 +96,7 @@ namespace SmellLevels
         private static Smells GetSmell(string name, double avg)
         {
             int rounded = (int)Math.Round(avg);
-            if (rounded % 7 == 0 || name.ToUpper() == "JANUS RADULUS")
+            if (rounded % 7 == 0 || name.ToUpper() == "JANUS RADULUS" || name.ToUpper() == "MAGDALÉNA HRIŠKOVÁ")
             {
                 return Smells.HoboToughLife;
             }
