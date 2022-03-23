@@ -28,6 +28,8 @@ namespace SmellLevels
                 if(Exit){continue;}
                 var Save = FSave(name);
                 if (Save){continue;}
+                var Duplicate = FDuplicate(name);
+                if(Duplicate){continue;}
 
                 double avg = GetAvg(name,sum);
                 Smells level = GetSmell(name,avg);
@@ -61,6 +63,17 @@ namespace SmellLevels
             if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
             {
                 Environment.Exit(0);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool FDuplicate(string name)
+        {
+            if (people.ContainsKey(name))
+            {
+                Console.WriteLine("\nTakový smraďoch byl už ohodnocen!!!\n");
                 return true;
             }
 
@@ -115,7 +128,7 @@ namespace SmellLevels
 
         private static void Table()
         {
-            Console.WriteLine("Tabulka smraďochů:\n-------------------");
+            Console.WriteLine("\nTabulka smraďochů:\n-------------------");
             foreach (KeyValuePair<string, Smells> person in people)
             {
                 Console.Write($"{person.Key}\t");
