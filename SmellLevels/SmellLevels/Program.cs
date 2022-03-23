@@ -24,9 +24,10 @@ namespace SmellLevels
                 int sum = 0;
                 string name = GetName();
 
-                FExit(name);
-                var Skip = FSave(name);
-                if (Skip) continue;
+                var Exit = FExit(name);
+                if(Exit){continue;}
+                var Save = FSave(name);
+                if (Save){continue;}
 
                 double avg = GetAvg(name,sum);
                 Smells level = GetSmell(name,avg);
@@ -55,12 +56,15 @@ namespace SmellLevels
             return false;
         }
 
-        private static void FExit(string text)
+        private static bool FExit(string text)
         {
             if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
             {
                 Environment.Exit(0);
+                return true;
             }
+
+            return false;
         }
 
         private static void AddPeople(string name, Smells level)
