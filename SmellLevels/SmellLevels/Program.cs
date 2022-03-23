@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace SmellLevels
 {
@@ -14,6 +16,7 @@ namespace SmellLevels
         }
 
         static Dictionary<string, Smells> people = new Dictionary<string, Smells>();
+        const string SavePath = "c:\\temp\\SmellTable.txt";
 
         static void Main(string[] args)
         {
@@ -23,6 +26,9 @@ namespace SmellLevels
                 string name = GetName();
 
                 FExit(name);
+                var Skip = FSave(name);
+                if (Skip) continue;
+
                 double avg = GetAvg(name,sum);
                 Smells level = GetSmell(name,avg);
                 AddPeople(name, level);
@@ -40,6 +46,21 @@ namespace SmellLevels
             {
                 Environment.Exit(0);
             }
+        }
+
+        private static bool FSave(string text)
+        {
+            if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
+            {
+                foreach(var person in people)
+                {
+                    File.AppendAllText(SavePath, $"{person.Key} {person.Value}\n");
+                }
+                Console.WriteLine("Uloženo");
+                return true;
+            }
+
+            return false;
         }
 
         private static string GetName()

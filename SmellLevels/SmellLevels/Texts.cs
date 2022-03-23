@@ -8,5 +8,6 @@
         public const string HoboToughLife = "smrdí jako bolavá noha bezdomovce";
 
         public const string ExitWord = "Exit";
+        public const string SaveWord = "Save";
     }
 }
