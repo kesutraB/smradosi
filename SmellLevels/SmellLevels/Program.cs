@@ -11,7 +11,7 @@ namespace SmellLevels
             OnionRings,
             HorseAss,
             HoboToughLife,
-            NoSmell,
+            NoSmell
         }
 
         static Dictionary<string, Smells> people = new Dictionary<string, Smells>();
@@ -43,11 +43,6 @@ namespace SmellLevels
         {
             if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (File.Exists(SavePath))
-                {
-                    File.Delete(SavePath);
-                }
-
                 foreach (var person in people)
                 {
                     File.AppendAllText(SavePath, $"{person.Key} {person.Value}\n");
