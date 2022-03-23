@@ -19,36 +19,49 @@ namespace SmellLevels
         {
             while (true)
             {
+                int sum = 0;
                 string name = GetName();
-                double avg = GetAvg(name);
+
+                FExit(name);
+                double avg = GetAvg(name,sum);
                 Smells level = GetSmell(name,avg);
                 AddPeople(name, level);
+
                 Table();
+
                 Console.WriteLine();
                 Console.WriteLine();
+            }
+        }
+
+        private static void FExit(string text)
+        {
+            if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Environment.Exit(0);
             }
         }
 
         private static string GetName()
         {
             string name;
-            Console.WriteLine("Zadej jméno smraďocha: ");
+            Console.Write("Zadej jméno smraďocha: ");
             name = Console.ReadLine();
             return name;
         }
 
         private static void AddPeople(string name, Smells level)
         {
-            Console.WriteLine($"{name} {level}.");
             people.Add(name, level);
         }
 
-        private static double GetAvg(string name)
+        private static double GetAvg(string name, int sum)
         {
-            int i, sum = 0;
+            int i;
             double avg;
             for (i = 0; i < name.Length; i++)
             {
+                if(name[i] == ' '){continue;}
                 sum += (int)name[i];
             }
 
@@ -59,7 +72,6 @@ namespace SmellLevels
         private static Smells GetSmell(string name, double avg)
         {
             int rounded = (int)Math.Round(avg);
-
             if (rounded % 7 == 0 || name.ToUpper() == "JANUS RADULUS")
             {
                 return Smells.HoboToughLife;
@@ -80,7 +92,7 @@ namespace SmellLevels
 
         private static void Table()
         {
-            Console.WriteLine("Tabulka smraďochů:\n---------------");
+            Console.WriteLine("Tabulka smraďochů:\n-------------------");
             foreach (KeyValuePair<string, Smells> person in people)
             {
                 Console.Write($"{person.Key}\t");
@@ -95,7 +107,7 @@ namespace SmellLevels
 
                     case Smells.OnionRings:
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine(Texts.OnionRings);
                     }
                         break;
