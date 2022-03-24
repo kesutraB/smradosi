@@ -72,7 +72,7 @@ namespace SmellLevels
         private static Smells GetSmell(string name, double avg)
         {
             int rounded = (int)Math.Round(avg);
-            if (rounded % 7 == 0 || name.ToUpper() == "JANUS RADULUS" || name.ToUpper() == "MAGDALÉNA HRIŠKOVÁ")
+            if (rounded % 7 == 0 || name.ToUpper() == "JANUS RADULUS")
             {
                 return Smells.HoboToughLife;
             }
