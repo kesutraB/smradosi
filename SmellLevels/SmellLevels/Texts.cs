@@ -7,7 +7,8 @@
         public const string HorseAss = "smrdí jako koňská řiť";
         public const string HoboToughLife = "smrdí jako bolavá noha bezdomovce";
 
-        public const string ExitWord = "Exit";
         public const string SaveWord = "Save";
+        public const string ExitWord = "Exit";
+        public const string Dash = " - ";
     }
 }

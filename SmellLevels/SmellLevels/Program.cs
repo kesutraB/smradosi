@@ -8,31 +8,38 @@ namespace SmellLevels
     {
         enum Smells
         {
-            OnionRings,
-            HorseAss,
-            HoboToughLife,
-            NoSmell
+            OnionRings,     //0
+            HorseAss,       //1
+            HoboToughLife,  //2
+            NoSmell         //3
         }
 
         static Dictionary<string, Smells> people = new Dictionary<string, Smells>();
-        const string SavePath = "c:\\temp\\SmellTable.txt";
+        const string FilePath = "c:\\temp\\SmellTable.txt";
 
         static void Main(string[] args)
         {
+            UploadTable(people);
+
             while (true)
             {
                 int sum = 0;
+
                 string name = GetName();
 
                 var Exit = FExit(name);
                 if(Exit){continue;}
+
                 var Save = FSave(name);
                 if (Save){continue;}
+
                 var Duplicate = FDuplicate(name);
                 if(Duplicate){continue;}
 
                 double avg = GetAvg(name,sum);
+
                 Smells level = GetSmell(name,avg);
+
                 AddPeople(name, level);
 
                 Table();
@@ -42,52 +49,9 @@ namespace SmellLevels
             }
         }
 
-        private static bool FSave(string text)
-        {
-            if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
-            {
-                foreach (var person in people)
-                {
-                    File.AppendAllText(SavePath, $"{person.Key} {person.Value}\n");
-                }
-
-                Console.WriteLine("Uloženo");
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool FExit(string text)
-        {
-            if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
-            {
-                Environment.Exit(0);
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool FDuplicate(string name)
-        {
-            if (people.ContainsKey(name))
-            {
-                Console.WriteLine("\nTakový smraďoch byl už ohodnocen!!!\n");
-                return true;
-            }
-
-            return false;
-        }
-
-        private static void AddPeople(string name, Smells level)
-        {
-            people.Add(name, level);
-        }
-
         private static string GetName()
         {
-            Console.Write("Zadej jméno smraďocha: ");
+            Console.Write("\nZadej jméno smraďocha: ");
             return Console.ReadLine();
         }
 
@@ -97,7 +61,7 @@ namespace SmellLevels
             double avg;
             for (i = 0; i < name.Length; i++)
             {
-                if(name[i] == ' '){continue;}
+                if (name[i] == ' ') { continue; }
                 sum += (int)name[i];
             }
 
@@ -124,6 +88,68 @@ namespace SmellLevels
             }
 
             return Smells.NoSmell;
+        }
+
+        private static void AddPeople(string name, Smells level)
+        {
+            people.Add(name, level);
+        }
+
+        private static bool FSave(string text)
+        {
+            if(File.Exists(FilePath)){File.Delete(FilePath);}
+            if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
+            {
+                foreach (var person in people)
+                {
+                    File.AppendAllText(FilePath, $"{person.Key} - {(int)person.Value}\n");
+                }
+
+                Console.WriteLine("Uloženo");
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool FExit(string text)
+        {
+            if (text.Equals(Texts.ExitWord, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Environment.Exit(0);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool FDuplicate(string name)
+        {
+            if (people.ContainsKey(name))
+            {
+                Console.WriteLine("\nTento smraďoch byl už ohodnocen!!!\n");
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void UploadTable(Dictionary<string, Smells> people)
+        {
+            if (File.Exists(FilePath))
+            {
+                var lines = File.ReadAllLines(FilePath);
+                foreach (var line in lines)
+                {
+                    if(line.Length == 0){return;}
+
+                    string SavedName = line.Split(Texts.Dash)[0];
+                    Smells SavedSmells = (Smells)Enum.Parse((typeof(Smells)),(line.Split(Texts.Dash)[1]));
+                    people.Add(SavedName, SavedSmells);
+
+                }
+            }
+            if(new FileInfo(FilePath).Length != 0){Table();}
         }
 
         private static void Table()
