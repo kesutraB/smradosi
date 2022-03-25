@@ -141,18 +141,19 @@ namespace SmellLevels
                 var lines = File.ReadAllLines(FilePath);
                 foreach (var line in lines)
                 {
-                    if(line.Length == 0){return;}
+                    if (line.Length == 0)
+                    {
+                        return;
+                    }
 
                     string SavedName = line.Split(Texts.Dash)[0];
-                    Smells SavedSmells = (Smells)Enum.Parse((typeof(Smells)),(line.Split(Texts.Dash)[1]));
+                    Smells SavedSmells = (Smells) Enum.Parse((typeof(Smells)), (line.Split(Texts.Dash)[1]));
                     people.Add(SavedName, SavedSmells);
 
                 }
             }
-            if (File.Exists(FilePath))
-            {
-                if (new FileInfo(FilePath).Length != 0) { PrintTable(); }
-            }
+
+            if (File.Exists(FilePath) && new FileInfo(FilePath).Length != 0) {PrintTable();}
         }
 
         private static void PrintTable()
