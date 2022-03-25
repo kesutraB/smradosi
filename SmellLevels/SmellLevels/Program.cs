@@ -149,7 +149,6 @@ namespace SmellLevels
 
                 }
             }
-
             if (File.Exists(FilePath))
             {
                 if (new FileInfo(FilePath).Length != 0) { PrintTable(); }
