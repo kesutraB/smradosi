@@ -19,7 +19,7 @@ namespace SmellLevels
 
         static void Main(string[] args)
         {
-            UploadTable(people);
+            PrintSavedTable(people);
 
             while (true)
             {
@@ -42,7 +42,7 @@ namespace SmellLevels
 
                 AddPeople(name, level);
 
-                Table();
+                PrintTable();
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -134,7 +134,7 @@ namespace SmellLevels
             return false;
         }
 
-        private static void UploadTable(Dictionary<string, Smells> people)
+        private static void PrintSavedTable(Dictionary<string, Smells> people)
         {
             if (File.Exists(FilePath))
             {
@@ -149,10 +149,14 @@ namespace SmellLevels
 
                 }
             }
-            if(new FileInfo(FilePath).Length != 0){Table();}
+
+            if (File.Exists(FilePath))
+            {
+                if (new FileInfo(FilePath).Length != 0) { PrintTable(); }
+            }
         }
 
-        private static void Table()
+        private static void PrintTable()
         {
             Console.WriteLine("\nTabulka smraďochů:\n-------------------");
             foreach (KeyValuePair<string, Smells> person in people)
