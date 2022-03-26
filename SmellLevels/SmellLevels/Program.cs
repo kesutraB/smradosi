@@ -97,7 +97,7 @@ namespace SmellLevels
 
         private static bool FSave(string text)
         {
-            if(File.Exists(FilePath)){File.Delete(FilePath);}
+            if(File.Exists(FilePath) && new FileInfo(FilePath).Length == 0) {File.Delete(FilePath);}
             if (text.Equals(Texts.SaveWord, StringComparison.InvariantCultureIgnoreCase))
             {
                 foreach (var person in people)
